@@ -21,6 +21,7 @@ let canvas = document.getElementById("snake");
 let contexto = canvas.getContext("2d");
 let caixa = 32;
 let snake = []; //vetor : atribui vários valores  dentro, diferente dasvariaveis
+let contaFood = 0
 
 snake[0] = {
     x: 8 * caixa,
@@ -113,6 +114,9 @@ function iniciarJogo() {
     criarFundo();
     criarCobrinha();
     desenharComida();
+    contexto.fillStyle = "white"
+    contexto.font = "20px Arial"
+    contexto.fillText("Pontos: " + contaFood, 10, 30)
     
     let cobraX = snake[0].x;
     let cobraY = snake[0].y;
@@ -126,6 +130,7 @@ function iniciarJogo() {
     if(cobraX != comida.x || cobraY != comida.y){
         snake.pop();
     } else {
+        contaFood++;
         comida.x = Math.floor(Math.random()* 15 + 1) *caixa;
         comida.y = Math.floor(Math.random()* 15 + 1) *caixa;
     }
@@ -135,12 +140,25 @@ function iniciarJogo() {
         y: cobraY
     }
     snake.unshift(novaCabeca);
-}
-//document.getElementById("reiniciar").addEventListener("click", function () {
-   // clearInterval(jogo);
-  //  location.reload();
-// });
 
+}
 
 
 let jogo = setInterval(iniciarJogo, 100);
+
+function reiniciarJogo() {
+    contaFood = 0;
+
+    snake = [];
+    snake[0] = {
+        x: Math.floor(Math.random() *15 + 1) * caixa,
+        y: Math.floor(Math.random() *15 + 1) * caixa
+
+    };
+    document.getElementById("game over").style.display = "none";
+
+    jogo = setInterval(iniciarJogo, 100);
+
+
+}
+document.getElementById("game over").style.display = "block";
